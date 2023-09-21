@@ -9,31 +9,31 @@ on:
       APP_NAME_PREFIX: 
         description: 'Prefix to be used in naming Azure resources'
         required: true
-        default: 'prefix'
+        default: 'anil'
       RESOURCE_GROUP_NAME: 
         description: 'Resource Group to deploy Azure resources'
         required: true
-        default: 'resource-group'
+        default: 'anil-webapp-resource-group'
       CLIENT_URL: 
         description: 'Client URL'
         required: true
-        default: 'https://<cdn-endpoint-name>.azureedge.net'
+        default: 'https://anil-dev.azureedge.net'
       API_URL: 
         description: 'API on APIM URL'
         required: true
-        default: 'https://<apim-name>.azure-api.net/<api-name>'
+        default: 'https://apim-anil-dev.azure-api.net/2do'
       AZURE_STORAGE_NAME: 
         description: 'Azure storage account name'
         required: true
-        default: 'storageaccountname'
+        default: 'anildev'
       CDN_PROFILE_NAME: 
         description: 'CDN profile name'
         required: true
-        default: 'cdn-profile-name'
+        default: 'cdn-anil-dev'
       CDN_ENDPOINT_NAME: 
         description: 'CDN endpoint name'
         required: true
-        default: 'cdn-endpoint-name'                        
+        default: 'anil-dev'                        
   
 # CONFIGURATION
 # For help, go to https://github.com/Azure/Actions
@@ -118,7 +118,7 @@ jobs:
       uses: Azure/cli@1.0.4
       with:
         # Azure CLI version to be used to execute the script. If not provided, latest version is used
-        azcliversion: 2.21.0
+        azcliversion: 2.30.0
         # Specify the script here
         inlineScript: az storage blob upload-batch -s ./${{ env.APP_SOURCE_PATH }}/${{ env.ANGULAR_PATH }}/dist -d '$web' --account-name ${{ env.AZURE_STORAGE_NAME }}
 
@@ -126,7 +126,7 @@ jobs:
     - name: Purge CDN endpoint on ${{ env.CDN_ENDPOINT_NAME }}
       uses: Azure/cli@1.0.4
       with:
-        azcliversion: 2.21.0
+        azcliversion: 2.30.0
         inlineScript: |
            az cdn endpoint purge --content-paths  "/*" --profile-name ${{ env.CDN_PROFILE_NAME }} --name ${{ env.CDN_ENDPOINT_NAME }} --resource-group ${{ env.RESOURCE_GROUP_NAME }}
 
